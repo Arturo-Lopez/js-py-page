@@ -1,9 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
 const Layout = ({ children }) => {
   const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    const theme = window.localStorage.getItem("dark");
+    setDark(theme);
+  }, []);
+
+  const toggleTheme = () => {
+    window.localStorage.setItem("dark", !dark);
+    setDark(!dark);
+  };
 
   return (
     <main className={dark ? "dark" : ""}>
@@ -12,6 +22,9 @@ const Layout = ({ children }) => {
         <nav>
           <Link href="/">
             <a>Inicio</a>
+          </Link>
+          <Link href="/github">
+            <a>Github</a>
           </Link>
           <Link href="/contacto">
             <a>Contacto</a>
@@ -22,7 +35,7 @@ const Layout = ({ children }) => {
               type="checkbox"
               id="check-dark"
               checked={dark}
-              onChange={() => setDark((prev) => !prev)}
+              onChange={toggleTheme}
             />
           </label>
         </nav>
